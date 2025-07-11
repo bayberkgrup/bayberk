@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tvitir - Sosyal Paylaşım Platformu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --tvitir-blue: #1DA1F2;
+            --tvitir-dark-blue: #1A91DA;
+            --tvitir-light-blue: #E8F5FE;
+            --dark: #14171A;
+            --light: #F5F8FA;
+            --gray: #657786;
+            --light-gray: #AAB8C2;
+            --extra-light-gray: #E1E8ED;
+            --card-bg: #FFFFFF;
+            --shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            border-bottom: 1px solid var(--extra-light-gray);
+            padding: 0.8rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--tvitir-blue);
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 1.5rem;
+        }
+
+        nav a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+            padding: 0.5rem 0.8rem;
+            border-radius: 30px;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: var(--tvitir-light-blue);
+            color: var(--tvitir-blue);
+        }
+
+        nav i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--tvitir-blue), #9b59b6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 0.7rem;
+            border: 2px solid white;
+        }
+
+        .btn {
+            background: var(--tvitir-blue);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn:hover {
+            background: var(--tvitir-dark-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .sidebar-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--extra-light-gray);
+            color: var(--dark);
+            font-weight: 700;
+        }
+
+        .trending-item {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--extra-light-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .trending-item:hover {
+            background-color: rgba(29, 161, 242, 0.05);
+        }
+
+        .trending-item:last-child {
+            border-bottom: none;
+        }
+
+        .trending-tag {
+            font-weight: 700;
+            color: var(--tvitir-blue);
+            margin-bottom: 0.3rem;
+        }
+
+        .trending-topic {
+            font-size: 0.95rem;
+            color: var(--gray);
+        }
+
+        /* Create Post Section */
+        .create-post {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .post-form {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--tvitir-blue), #3498db);
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .post-input {
+            flex: 1;
+            border: 1px solid var(--extra-light-gray);
+            font-size: 1.1rem;
+            padding: 0.8rem 1rem;
+            border-radius: 15px;
+            resize: none;
+            min-height: 100px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .post-input:focus {
+            border-color: var(--tvitir-blue);
+            box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.2);
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 65px;
+        }
+
+        .action-icons {
+            display: flex;
+        }
+
+        .action-icons i {
+            margin-right: 1rem;
+            color: var(--tvitir-blue);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-icons i:hover {
+            background-color: var(--tvitir-light-blue);
+            transform: scale(1.1);
+        }
+
+        /* Feed Styles */
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .post {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .post:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-content {
+            flex: 1;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .post-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--tvitir-blue), #9b59b6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .post-user {
+            flex: 1;
+        }
+
+        .post-username {
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .post-handle, .post-time {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .post-time {
+            margin-left: 0.5rem;
+        }
+
+        .post-text {
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .post-stats {
+            display: flex;
+            justify-content: space-around;
+            color: var(--gray);
+            padding: 0.8rem 0;
+            border-top: 1px solid var(--extra-light-gray);
+            border-bottom: 1px solid var(--extra-light-gray);
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-item i {
+            margin-right: 5px;
+        }
+
+        .post-actions-bar {
+            display: flex;
+            justify-content: space-around;
+            color: var(--gray);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+
+        .action-btn i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+
+        .action-btn:hover {
+            background-color: rgba(29, 161, 242, 0.1);
+            color: var(--tvitir-blue);
+        }
+
+        .like-btn:hover, .like-btn.active {
+            color: #e0245e;
+        }
+
+        .comment-btn:hover, .comment-btn.active {
+            color: #17bf63;
+        }
+
+        .share-btn:hover {
+            color: #794bc4;
+        }
+
+        /* Comments section */
+        .comments {
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .comments.show {
+            display: block;
+        }
+
+        .comment-form {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .comment-input {
+            flex: 1;
+            border: 1px solid var(--extra-light-gray);
+            border-radius: 30px;
+            padding: 0.7rem 1.2rem;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .comment-input:focus {
+            border-color: var(--tvitir-blue);
+            box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.2);
+        }
+
+        .comment-btn-small {
+            background: var(--tvitir-blue);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 30px;
+            margin-left: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .comment-btn-small:hover {
+            background: var(--tvitir-dark-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(29, 161, 242, 0.3);
+        }
+
+        .comment-list {
+            margin-top: 1rem;
+        }
+
+        .comment {
+            display: flex;
+            margin-bottom: 1.2rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background-color: #f8f9fa;
+            border: 1px solid var(--extra-light-gray);
+        }
+
+        .comment-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db, #2ecc71);
+            margin-right: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-username {
+            font-weight: 600;
+            margin-right: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        .comment-handle {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .comment-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Right sidebar styles */
+        .right-sidebar {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .follow-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            color: var(--dark);
+            font-weight: 700;
+        }
+
+        .follow-user {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--extra-light-gray);
+        }
+
+        .follow-user:last-child {
+            border-bottom: none;
+        }
+
+        .follow-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-right: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .follow-info {
+            flex: 1;
+        }
+
+        .follow-name {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .follow-handle {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .follow-button {
+            background: transparent;
+            border: 1px solid var(--tvitir-blue);
+            color: var(--tvitir-blue);
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .follow-button:hover {
+            background-color: var(--tvitir-light-blue);
+        }
+
+        .follow-button.following {
+            background-color: var(--tvitir-blue);
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: white;
+            border-top: 1px solid var(--extra-light-gray);
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--tvitir-blue);
+            margin-bottom: 1rem;
+        }
+
+        .footer-title {
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--tvitir-blue);
+            text-decoration: underline;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--tvitir-light-blue);
+            color: var(--tvitir-blue);
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--tvitir-blue);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding: 1.5rem 0 0;
+            margin-top: 2rem;
+            border-top: 1px solid var(--extra-light-gray);
+            color: var(--gray);
+        }
+
+        /* Responsive design */
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr 2fr;
+            }
+            
+            .right-sidebar {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .header-container {
+                padding: 0.5rem;
+            }
+            
+            .user-name {
+                display: none;
+            }
+            
+            .post-actions {
+                padding-left: 0;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .action-icons {
+                margin-bottom: 1rem;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo span {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            color: var(--dark);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            color: var(--tvitir-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fab fa-twitter"></i>
+                <span>Tvitir</span>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> Ana Sayfa</a></li>
+                    <li><a href="#"><i class="fas fa-hashtag"></i> Keşfet</a></li>
+                    <li><a href="#"><i class="fas fa-bell"></i> Bildirimler</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> Mesajlar</a></li>
+                </ul>
+            </nav>
+            
+            <div class="user-actions">
+                <div class="user-info" id="user-profile">
+                    <div class="user-avatar">A</div>
+                    <span class="user-name">Ayşe K.</span>
+                </div>
+                <button class="btn" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Çıkış
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-title">Popüler Konular</div>
+            <div class="trending-item">
+                <div class="trending-tag">#YazTatili</div>
+                <div class="trending-topic">2.5K tvit</div>
+            </div>
+            <div class="trending-item">
+                <div class="trending-tag">#Teknoloji</div>
+                <div class="trending-topic">1.8K tvit</div>
+            </div>
+            <div class="trending-item">
+                <div class="trending-tag">#FilmÖnerisi</div>
+                <div class="trending-topic">1.2K tvit</div>
+            </div>
+            <div class="trending-item">
+                <div class="trending-tag">#Spor</div>
+                <div class="trending-topic">980 tvit</div>
+            </div>
+            <div class="trending-item">
+                <div class="trending-tag">#SahilKeyfi</div>
+                <div class="trending-topic">750 tvit</div>
+            </div>
+        </div>
+        
+        <!-- Main Feed -->
+        <div class="feed">
+            <!-- Create Post -->
+            <div class="create-post">
+                <div class="post-form">
+                    <div class="avatar">A</div>
+                    <textarea class="post-input" placeholder="Neler oluyor?" id="post-text"></textarea>
+                </div>
+                <div class="post-actions">
+                    <div class="action-icons">
+                        <i class="far fa-image" title="Fotoğraf ekle"></i>
+                        <i class="fas fa-poll" title="Anket oluştur"></i>
+                        <i class="far fa-smile" title="Emoji ekle"></i>
+                        <i class="fas fa-map-marker-alt" title="Konum ekle"></i>
+                    </div>
+                    <button class="btn" id="post-submit">
+                        <i class="fas fa-paper-plane"></i> Tvit At
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Posts will be dynamically added here -->
+            <div id="post-feed"></div>
+        </div>
+        
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <div class="follow-title">Takip Edilecekler</div>
+            <div class="follow-user">
+                <div class="follow-avatar" style="background: linear-gradient(135deg, #1DA1F2, #9b59b6);">E</div>
+                <div class="follow-info">
+                    <div class="follow-name">Elif Ş.</div>
+                    <div class="follow-handle">@elifdesign</div>
+                </div>
+                <button class="follow-button">Takip Et</button>
+            </div>
+            <div class="follow-user">
+                <div class="follow-avatar" style="background: linear-gradient(135deg, #1DA1F2, #3498db);">M</div>
+                <div class="follow-info">
+                    <div class="follow-name">Mehmet T.</div>
+                    <div class="follow-handle">@mehmettravel</div>
+                </div>
+                <button class="follow-button following">Takip Ediliyor</button>
+            </div>
+            <div class="follow-user">
+                <div class="follow-avatar" style="background: linear-gradient(135deg, #1DA1F2, #2ecc71);">S</div>
+                <div class="follow-info">
+                    <div class="follow-name">Selin K.</div>
+                    <div class="follow-handle">@selinfood</div>
+                </div>
+                <button class="follow-button">Takip Et</button>
+            </div>
+            
+            <div class="follow-title" style="margin-top: 1.5rem;">
+                Gündemdekiler
+            </div>
+            <div class="trending-item">
+                <div class="trending-tag">#İstanbul</div>
+                <div class="trending-topic">1.2K tvit</div>
+            </div>
+            <div class="trending-item">
+                <div class="trending-tag">#TatilPlanı</div>
+                <div class="trending-topic">890 tvit</div>
+            </div>
+            <div class="trending-item">
+                <div class="trending-tag">#DiziÖnerisi</div>
+                <div class="trending-topic">760 tvit</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="footer-logo">Tvitir</div>
+                <p>Sosyal paylaşım platformu. Tvitlerinizi paylaşın, gündemi takip edin.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-title">Bağlantılar</div>
+                <ul class="footer-links">
+                    <li><a href="#">Ana Sayfa</a></li>
+                    <li><a href="#">Keşfet</a></li>
+                    <li><a href="#">Bildirimler</a></li>
+                    <li><a href="#">Mesajlar</a></li>
+                    <li><a href="#">Profil</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-title">Yardım</div>
+                <ul class="footer-links">
+                    <li><a href="#">Hesap Ayarları</a></li>
+                    <li><a href="#">Gizlilik Politikası</a></li>
+                    <li><a href="#">Kullanım Şartları</a></li>
+                    <li><a href="#">Sıkça Sorulan Sorular</a></li>
+                    <li><a href="#">İletişim</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-title">İletişim</div>
+                <ul class="footer-links">
+                    <li><i class="fas fa-map-marker-alt"></i> İstanbul, Türkiye</li>
+                    <li><i class="fas fa-phone"></i> +90 555 123 4567</li>
+                    <li><i class="fas fa-envelope"></i> info@tvitir.com</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            © 2023 Tvitir - Sosyal Paylaşım Platformu | Tüm hakları saklıdır.
+        </div>
+    </footer>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">İşlem başarıyla tamamlandı</span>
+    </div>
+
+    <script>
+        // Data structure for users and posts
+        const users = [
+            { id: 1, username: "Ayşe K.", handle: "@aysekk", avatar: "A" },
+            { id: 2, username: "Ahmet Y.", handle: "@ahmetyilmaz", avatar: "A" },
+            { id: 3, username: "Selin Ö.", handle: "@selinokur", avatar: "S" },
+            { id: 4, username: "Burak T.", handle: "@buraktech", avatar: "B" }
+        ];
+        
+        // Sample posts
+        let posts = [
+            {
+                id: 1,
+                userId: 2,
+                time: "2 saat önce",
+                text: "Bugün İstanbul'da hava muhteşem! Sahilde yürüyüş yapmak için harika bir gün. #HaftaSonu #SahilKeyfi",
+                likes: 42,
+                comments: 8,
+                retweets: 5,
+                likedBy: [1, 3],
+                commentsList: [
+                    { id: 1, userId: 3, time: "1 saat önce", text: "Ahmet Bey, hangi sahile gittiniz? Bize de öneriniz var mı?" },
+                    { id: 2, userId: 4, time: "45 dakika önce", text: "Kadıköy sahili şu sıralar çok güzel, mutlaka görün!" }
+                ],
+                showComments: false
+            },
+            {
+                id: 2,
+                userId: 3,
+                time: "4 saat önce",
+                text: "Yeni aldığım kitabı bitirdim - 'Kürk Mantolu Madonna'. Harika bir eser, herkese tavsiye ederim. #KitapÖnerisi #Edebiyat",
+                likes: 87,
+                comments: 12,
+                retweets: 24,
+                likedBy: [1, 2, 4],
+                commentsList: [
+                    { id: 1, userId: 1, time: "3 saat önce", text: "Ben de geçen hafta bitirdim, gerçekten etkileyici bir kitap!" }
+                ],
+                showComments: false
+            },
+            {
+                id: 3,
+                userId: 4,
+                time: "6 saat önce",
+                text: "Yeni çıkan telefon modellerini incelediniz mi? Sizce hangisini almalıyım? #Teknoloji #YeniTelefon",
+                likes: 24,
+                comments: 5,
+                retweets: 3,
+                likedBy: [2],
+                commentsList: [
+                    { id: 1, userId: 2, time: "5 saat önce", text: "Bütçene göre değişir ama son çıkan model çok iyi özelliklere sahip." },
+                    { id: 2, userId: 3, time: "4 saat önce", text: "Ben geçen ay aldım, kamerası mükemmel!" }
+                ],
+                showComments: false
+            }
+        ];
+        
+        // Current user (simulated login)
+        const currentUser = users[0];
+        
+        // DOM elements
+        const postFeed = document.getElementById('post-feed');
+        const postText = document.getElementById('post-text');
+        const postSubmit = document.getElementById('post-submit');
+        const logoutBtn = document.getElementById('logout-btn');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
+        
+        // Show notification
+        function showNotification(message) {
+            notificationText.textContent = message;
+            notification.className = 'notification show';
+            
+            setTimeout(() => {
+                notification.className = notification.className.replace(' show', '');
+            }, 3000);
+        }
+        
+        // Format numbers for display
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num;
+        }
+        
+        // Get user by ID
+        function getUserById(userId) {
+            return users.find(user => user.id === userId);
+        }
+        
+        // Render posts
+        function renderPosts() {
+            postFeed.innerHTML = '';
+            
+            if (posts.length === 0) {
+                postFeed.innerHTML = `
+                    <div class="post">
+                        <div class="post-content" style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-comment-slash" style="font-size: 3rem; color: var(--gray); margin-bottom: 1rem;"></i>
+                            <h3>Henüz tvit yok</h3>
+                            <p>İlk tviti sen paylaş!</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            posts.forEach(post => {
+                const postUser = getUserById(post.userId);
+                const isLiked = post.likedBy.includes(currentUser.id);
+                
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.dataset.id = post.id;
+                
+                postElement.innerHTML = `
+                    <div class="post-content">
+                        <div class="post-header">
+                            <div class="post-avatar">${postUser.avatar}</div>
+                            <div class="post-user">
+                                <div class="post-username">${postUser.username}</div>
+                                <div>
+                                    <span class="post-handle">${postUser.handle}</span>
+                                    <span class="post-time">• ${post.time}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-text">${post.text}</div>
+                        <div class="post-stats">
+                            <div class="stat-item">
+                                <i class="far fa-comment"></i> ${post.comments} yorum
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-retweet"></i> ${formatNumber(post.retweets)} paylaşım
+                            </div>
+                            <div class="stat-item">
+                                <i class="far fa-heart"></i> ${formatNumber(post.likes)} beğeni
+                            </div>
+                        </div>
+                        <div class="post-actions-bar">
+                            <div class="action-btn comment-btn ${post.showComments ? 'active' : ''}" data-id="${post.id}">
+                                <i class="far fa-comment"></i>
+                            </div>
+                            <div class="action-btn like-btn ${isLiked ? 'active' : ''}" data-id="${post.id}">
+                                <i class="${isLiked ? 'fas' : 'far'} fa-heart"></i>
+                            </div>
+                            <div class="action-btn share-btn" data-id="${post.id}">
+                                <i class="fas fa-retweet"></i>
+                            </div>
+                        </div>
+                        <div class="comments ${post.showComments ? 'show' : ''}" id="comments-${post.id}">
+                            <div class="comment-form">
+                                <input type="text" class="comment-input" placeholder="Bir yorum yazın..." id="comment-input-${post.id}">
+                                <button class="comment-btn-small" data-id="${post.id}">Yorum Yap</button>
+                            </div>
+                            <div class="comment-list" id="comment-list-${post.id}">
+                                ${renderComments(post.commentsList)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                postFeed.appendChild(postElement);
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('.like-btn').forEach(btn => {
+                btn.addEventListener('click', handleLike);
+            });
+            
+            document.querySelectorAll('.comment-btn-small').forEach(btn => {
+                btn.addEventListener('click', handleCommentSubmit);
+            });
+            
+            document.querySelectorAll('.action-btn.comment-btn').forEach(btn => {
+                btn.addEventListener('click', toggleComments);
+            });
+            
+            document.querySelectorAll('.share-btn').forEach(btn => {
+                btn.addEventListener('click', handleShare);
+            });
+        }
+        
+        // Render comments
+        function renderComments(comments) {
+            if (comments.length === 0) {
+                return `<p style="text-align: center; color: var(--gray); padding: 1rem;">Henüz yorum yok. İlk yorumu sen yap!</p>`;
+            }
+            
+            return comments.map(comment => {
+                const commentUser = getUserById(comment.userId);
+                return `
+                    <div class="comment">
+                        <div class="comment-avatar">${commentUser.avatar}</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-username">${commentUser.username}</span>
+                                <span class="comment-handle">${commentUser.handle} • ${comment.time}</span>
+                            </div>
+                            <div class="comment-text">${comment.text}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Handle like
+        function handleLike(e) {
+            const postId = parseInt(e.currentTarget.dataset.id);
+            const post = posts.find(p => p.id === postId);
+            
+            if (!post) return;
+            
+            const userIndex = post.likedBy.indexOf(currentUser.id);
+            
+            if (userIndex === -1) {
+                // Like the post
+                post.likedBy.push(currentUser.id);
+                post.likes++;
+                showNotification('Tvit beğenildi!');
+            } else {
+                // Unlike the post
+                post.likedBy.splice(userIndex, 1);
+                post.likes--;
+                showNotification('Beğeni kaldırıldı');
+            }
+            
+            renderPosts();
+        }
+        
+        // Handle comment submission
+        function handleCommentSubmit(e) {
+            const postId = parseInt(e.currentTarget.dataset.id);
+            const commentInput = document.getElementById(`comment-input-${postId}`);
+            const commentText = commentInput.value.trim();
+            
+            if (!commentText) {
+                showNotification('Lütfen bir yorum yazın');
+                return;
+            }
+            
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            const newComment = {
+                id: Date.now(),
+                userId: currentUser.id,
+                time: "Şimdi",
+                text: commentText
+            };
+            
+            post.commentsList.unshift(newComment);
+            post.comments++;
+            post.showComments = true;
+            renderPosts();
+            
+            // Clear input
+            commentInput.value = '';
+            showNotification('Yorumunuz paylaşıldı!');
+        }
+        
+        // Handle share
+        function handleShare(e) {
+            const postId = parseInt(e.currentTarget.dataset.id);
+            const post = posts.find(p => p.id === postId);
+            
+            if (post) {
+                post.retweets++;
+                showNotification('Tvit paylaşıldı!');
+                renderPosts();
+            }
+        }
+        
+        // Toggle comments visibility
+        function toggleComments(e) {
+            const postId = parseInt(e.currentTarget.dataset.id);
+            const post = posts.find(p => p.id === postId);
+            
+            if (post) {
+                post.showComments = !post.showComments;
+                renderPosts();
+            }
+        }
+        
+        // Handle new post submission
+        postSubmit.addEventListener('click', () => {
+            const text = postText.value.trim();
+            
+            if (!text) {
+                showNotification('Lütfen bir tvit yazın');
+                return;
+            }
+            
+            const newPost = {
+                id: Date.now(),
+                userId: currentUser.id,
+                time: "Şimdi",
+                text: text,
+                likes: 0,
+                comments: 0,
+                retweets: 0,
+                likedBy: [],
+                commentsList: [],
+                showComments: false
+            };
+            
+            posts.unshift(newPost);
+            renderPosts();
+            
+            // Clear input
+            postText.value = '';
+            showNotification('Tvitiniz paylaşıldı!');
+            
+            // Scroll to top to see the new post
+            window.scrollTo(0, 0);
+        });
+        
+        // Handle logout
+        logoutBtn.addEventListener('click', () => {
+            showNotification('Çıkış yapılıyor...');
+            setTimeout(() => {
+                alert('Çıkış yapıldı. Gerçek bir uygulamada giriş sayfasına yönlendirilirdiniz.');
+            }, 1000);
+        });
+        
+        // Initialize the app
+        renderPosts();
+        
+        // Simulate user profile click
+        document.getElementById('user-profile').addEventListener('click', () => {
+            showNotification('Profil sayfasına yönlendiriliyorsunuz...');
+        });
+        
+        // Simulate follow buttons
+        document.querySelectorAll('.follow-button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.classList.contains('following')) {
+                    this.classList.remove('following');
+                    this.textContent = 'Takip Et';
+                    showNotification('Takip etme işlemi sonlandırıldı');
+                } else {
+                    this.classList.add('following');
+                    this.textContent = 'Takip Ediliyor';
+                    showNotification('Takip etmeye başladınız');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
